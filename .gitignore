@@ -1,0 +1,7 @@
+﻿*.téléchargement
+*.lnk
+.sixth/
+*_files/
+*.tmp
+*.log
+Thumbs.db

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boutique en ligne – ShopExpress</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 0; 
+      background: #f5f5f5; 
+    }
+    header { 
+      background: #111; 
+      color: #fff; 
+      padding: 15px 30px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    header h1 { margin: 0; }
+    nav a { 
+      color: #fff; 
+      margin-left: 15px; 
+      text-decoration: none; 
+    }
+    .hero { 
+      background: linear-gradient(to right, #ff9800, #ff5722); 
+      color: white; 
+      padding: 60px 30px; 
+      text-align: center; 
+    }
+    .products { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+      gap: 20px; 
+      padding: 30px; 
+    }
+    .card { 
+      background: white; 
+      padding: 15px; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+      position: relative;
+    }
+    .card img { 
+      width: 100%; 
+      border-radius: 8px; 
+      height: 200px;
+      object-fit: cover;
+    }
+    .card button { 
+      background: #ff5722; 
+      color: white; 
+      border: none; 
+      padding: 10px; 
+      width: 100%; 
+      border-radius: 5px; 
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .card button:hover {
+      background: #e64a19;
+    }
+    .cart { 
+      padding: 30px; 
+      background: #fff; 
+      margin: 20px; 
+      border-radius: 8px; 
+      max-width: 800px;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .total-section {
+      text-align: right;
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+    .payment-methods {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+    .payment-methods p {
+      margin: 5px 0;
+    }
+    footer { 
+      background: #111; 
+      color: #fff; 
+      text-align: center; 
+      padding: 20px; 
+    }
+    .empty-cart {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+    }
+    #cartItems {
+      list-style: none;
+      padding: 0;
+    }
+    .contact-info {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🛒 ShopExpress</h1>
+  <nav>
+    <a href="#accueil">Accueil</a>
+    <a href="#produits">Produits</a>
+    <a href="#panier">Panier</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="accueil" class="hero">
+  <h2>Bienvenue sur ShopExpress</h2>
+  <p>Votre boutique en ligne simple, rapide et sécurisée</p>
+  <p>Cliquez sur "Ajouter au panier" pour chaque produit de votre choix</p>
+</section>
+
+<section id="produits" class="products">
+  <div class="card">
+    <img src="sop1.jpg" alt="Chaussures en cuir">
+    <p><a href="h.html">Voir les chaussures</a></p>
+    <h3>CUIR</h3>
+    <p><strong>Prix : 10 000 FCFA</strong></p>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Chaussures en cuir de qualité supérieure</small></p>
+  </div>
+
+  <div class="card">
+    <img src="sop2.jpg" alt="Vestes">
+    <p><a href="p.html">Voir les vestes</a></p>
+    <h3>VESTES</h3>
+    <p><strong>Prix : 15 000 FCFA</strong></p>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Vestes élégantes pour toutes les saisons</small></p>
+  </div>
+
+  <div class="card">
+    <img src="po1.jpg" alt="Cravates">
+    <p><a href="t.html">Voir les cravates</a></p>
+    <h3>CRAVATES</h3>
+    <p><strong>Prix : 6 000 FCFA</strong></p>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Cravates de style pour hommes</small></p>
+  </div>
+
+  <div class="card">
+    <img src="zo1.jpg" alt="Montres">
+    <h3>MONTRES</h3>
+    <p><strong>Prix : 30 000 FCFA</strong></p>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Montres de luxe et précises</small></p>
+  </div>
+
+  <div class="card">
+    <img src="ko1.jpg" alt="Chapeaux">
+    <h3>CHAPEAUX</h3>
+    <p><strong>Prix : 5 000 FCFA</strong></p>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Chapeaux stylés pour toutes occasions</small></p>
+  </div>
+
+  <div class="card">
+    <img src="jop4.jpg" alt="Sacs">
+    <h3>SACS</h3>
+    <p><strong>Prix : 20 000 FCFA</strong></p>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Sacs robustes et élégants</small></p>
+  </div>
+
+  <div class="card">
+    <img src="co1.jpg" alt="Ceintures">
+    <h3>CEINTURES</h3>
+    <p><strong>Prix : 10 000 FCFA</strong></p>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Sacs robustes et élégants</small></p>
+  </div>
+    <div class="card">
+    <img src="robe.jpg">
+    <h3>ROBES</h3>
+    <p><strong> Prix: 22000FCFA</strong></p>
+    <a href="https://www.pinterest.fr/search/pins/?q=robe">Voir les robes</a>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Sacs robustes et élégants</small></p>
+    </div>
+    <div class="card">
+    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200">
+    <h3>CHEMISE CLASSIQUE</h3>
+    <p>Prix 12000FCFA</p>
+    <a href="https://www.pinterest.fr/search/pins/?q=chemise">voir les chemises classiques </a>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Sacs robustes et élégants</small></p>
+    </div>
+    <div class="card">
+    <img src="tij.jpg">
+    <h3>T-SHIRT</h3>
+    <p> prix:8000 FCFA</p>
+    <a href="https://www.pinterest.fr/search/pins/?q=t-shirt">voir les T-shirts</a>
+    <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+    <p><small>Sacs robustes et élégants</small></p>
+    </div>
+    <div class="card">
+      <img src="lun.jpg">
+      <h3>LUNETTES</h3>
+      <p> prix:15000 FCFA</p>
+      <a href="https://www.pinterest.fr/search/pins/?q=lunettes%20soleil">voir les Lunettes</a>
+      <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+      <p><small>Sacs robustes et élégants</small></p>
+    </div>
+    <div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=200&h=150&fit=crop" alt="Blouse">
+            <h3>BLOUSE FLUIDE</h3>
+            <P>14 000 FCFA</P>
+            <a href="https://www.pinterest.fr/search/pins/?q=blouse%20fluide%20femme" >Blouse Fluide</a> 
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>
+          </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1574259514741-58b9ca3c9731?w=200&h=150&fit=crop" alt="Jupez">
+            <h3>JUPE CRAYON</h3>
+            <p> Prix : 16 000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=jupe%20crayon%20femme" >voir les jupes crayon</a>
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>
+          </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=200&h=150&fit=crop" alt="Sac">
+            <h3>prix : SAC ELEGANT</h3>
+            <p>20 000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=sac%20%C3%A9l%C3%A9gant%20femme">sac elegant</a>
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>
+          </div>
+          <div class="card">
+            <img src="SE.jpg">
+             <h3>PANTALON</h3>
+             <p>prix:18000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=pantalon%20chino">voir les pantalon chino</a>
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>
+        </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1594736797933-d0f4e6dace66?w=200&h=150&fit=crop" alt="Veste Homme">
+            <h3>VESTES BLAZER</h3>
+            <p>25 000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=veste%20blazer%20homme"> voir veste blazer </a>
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>
+          </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=200&h=150&fit=crop" alt="Montre Femme">
+            <h3>Montre Fine</h3>
+            <p>28 000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=montre%20fine%20femme" > voir monte fine</a>
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>
+          </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=200&h=150&fit=crop" alt="Robe Fille">
+            <h3>Robe Fille</h3>
+            <p>prix: 10 000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=robe%20fille%20enfant">voir robe Enfant</a >  
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>                    </a>
+          </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1517213851185-6648f4dc64d4?w=200&h=150&fit=crop" >
+            <h3>Short Sport</h3>
+            <p>7 000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=short%20sport%20enfant">voir les short sport</a>
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+             <p><small>Sacs robustes et élégants</small></p>
+          </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b7?w=200&h=150&fit=crop">
+            <h3>Baskets</h3>
+            <p> prix : 12 000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=baskets%20enfant">voir les Baskets</a>
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>
+          </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=200&h=150&fit=crop">
+            <h3>Sacoche Homme</h3>
+            <p>prix :18 000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=sacoche%20homme">voir Sacoche hommes</a>
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>
+          </div>
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=200&h=150&fit=crop" alt="Sac Femme">
+            <h3>Sac Main</h3>
+            <p>prix:22 000 FCFA</p>
+            <a href="https://www.pinterest.fr/search/pins/?q=sac%20main%20femme" >voir les sacs à main</a>
+            <p><a href="#panier" style="color: #ff5722;">➕ Ajouter au panier</a></p>
+            <p><small>Sacs robustes et élégants</small></p>
+          </div>
+</section>
+
+<section id="panier" class="cart">
+  <h2>🛒 Votre Panier</h2>
+  
+  <div id="cartItems" class="empty-cart">
+    <p>Votre panier est vide </p>
+    <p><a href="#produits"> Retour aux produits pour commander</a></p>
+  </div>
+  
+  <div class="total-section" style="display: none;">
+    <h3>Total : <span id="total">0</span> FCFA</h3>
+  </div>
+<body>
+<div>
+  <div class="payment-methods">
+    <h3>💳 Moyens de paiement disponibles</h3>
+    <p>✔ Mobile Money (Flooz, TMoney)</p>
+    <p>✔ Carte bancaire (Visa, MasterCard)</p>
+    <p>✔ PayPal / Stripe</p>
+    <p>✔ Paiement à la livraison (Lomé et environs)</p>
+  </div>
+
+  <div style="text-align: center; margin-top: 20px;">
+    <p><strong>📞 Contactez-nous pour finaliser votre commande :</strong></p>
+    <p>WhatsApp/Appelez : <a href="tel:+22893231904" style="color: #ff5722; font-size: 1.2em;">+228 93 23 19 04</a></p>
+    <p>Email : <a href="mailto:contact@shopexpress.com">contact@shopexpress.com</a></p>
+  </div>
+</section>
+
+<section id="contact" class="contact-info">
+  <h2>📧 Contact</h2>
+  <p><strong>Email :</strong> contact@shopexpress.com</p>
+  <p><strong>Téléphone :</strong> +228 93 23 19 04</p>
+  <p><strong>Adresse :</strong> Lomé, Maritime, Togo</p>
+  <p><strong>Horaires :</strong> Lun-Sam 8h-19h</p>
+</section>
+
+<footer>
+  <p>© 2025 ShopExpress – Tous droits réservés | Fabriqué avec  à Lomé, Togo</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>Bonne Année 2026 - MAURICE PICASSO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gold: #FFD700;
+            --secondary-gold: #FFA500;
+            --neon-pink: #FF006E;
+            --neon-purple: #8338EC;
+            --neon-blue: #3A86FF;
+            --neon-green: #06FFA5;
+            --shadow-gold: 0 0 20px var(--primary-gold);
+            --shadow-neon: 0 0 40px var(--neon-pink);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(-45deg, #000, var(--neon-pink), var(--neon-purple), var(--neon-blue), var(--neon-green));
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+            color: white;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Particules premium */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, var(--primary-gold), var(--secondary-gold));
+            box-shadow: var(--shadow-gold);
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); }
+        }
+
+        /* Compte à rebours principal - Ultra HD */
+        #countdown {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(6rem, 22vw, 18rem);
+            font-weight: 900;
+            text-align: center;
+            z-index: 20;
+            text-shadow: var(--shadow-gold), var(--shadow-neon);
+            letter-spacing: 0.1em;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Voix de la foule - Dynamique */
+        #voice-crowd {
+            position: absolute;
+            top: 58%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            font-weight: 700;
+            color: white;
+            opacity: 0;
+            z-index: 18;
+            text-shadow: 0 0 25px rgba(255,255,255,0.8);
+            transition: all 0.3s ease;
+        }
+
+        /* Message principal explosif */
+        #message {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: clamp(2.5rem, 9vw, 6rem);
+            font-weight: 900;
+            color: var(--primary-gold);
+            text-shadow: var(--shadow-gold), var(--shadow-neon);
+            opacity: 0;
+            z-index: 22;
+            text-align: center;
+            letter-spacing: 0.05em;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Titre principal */
+        #newyear {
+            position: absolute;
+            top: 12%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(2rem, 7vw, 5rem);
+            font-weight: 700;
+            opacity: 0;
+            z-index: 16;
+            text-shadow: 0 0 30px rgba(255,255,255,0.9);
+            transition: all 1s ease;
+        }
+
+        /* Souhaits élégants */
+        .wishes {
+            position: absolute;
+            bottom: 28%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            font-weight: 400;
+            opacity: 0;
+            max-width: 90%;
+            z-index: 14;
+            line-height: 1.4;
+            text-shadow: 0 0 15px rgba(255,255,255,0.6);
+        }
+
+        /* SIGNATURE PROFESSIONNELLE MAURICE PICASSO */
+        #signature {
+            position: fixed;
+            bottom: 3%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255,215,0,0.4);
+            border-radius: 50px;
+            padding: 20px 40px;
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            opacity: 0;
+            z-index: 30;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 2px;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: default;
+        }
+
+        #signature:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 
+                0 12px 40px rgba(255,215,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+            border-color: var(--primary-gold);
+        }
+
+        #signature .name {
+            display: block;
+            font-size: clamp(1.2rem, 3vw, 2.2rem);
+            color: var(--primary-gold);
+            text-shadow: var(--shadow-gold);
+            margin-bottom: 4px;
+            font-weight: 900;
+        }
+
+        #signature .handle {
+            font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+            color: rgba(255,255,255,0.9);
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Contrôles professionnels */
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 40;
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255,215,0,0.6);
+            color: var(--primary-gold);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: var(--primary-gold);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,215,0,0.4);
+        }
+
+        /* Feux d'artifice multicouleurs */
+        .firework {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: var(--shadow-gold);
+        }
+
+        .firework::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: explodePro 1.2s ease-out forwards;
+        }
+
+        @keyframes explodePro {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(30); opacity: 0; }
+        }
+
+        /* Animations premium */
+        @keyframes signatureGlow {
+            0% { 
+                opacity: 0; 
+                transform: translateX(-50%) scale(0.7) rotate(-5deg); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: translateX(-50%) scale(1.1); 
+                box-shadow: 0 15px 45px rgba(255,215,0,0.5);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateX(-50%) scale(1) rotate(0deg); 
+            }
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translate(-50%, -40%); }
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* Responsive ultra précis */
+        @media (max-width: 768px) {
+            .controls { top: 15px; right: 15px; flex-direction: column; }
+            button { padding: 10px 20px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Interface de contrôle premium -->
+    <div class="controls">
+        <button onclick="startCountdown()">🔄 Recommencer</button>
+        <button onclick="toggleMusic()">🎵 Son</button>
+    </div>
+
+    <!-- Titre principal -->
+    <h1 id="newyear">🎉 BONNE ANNÉE 2026 🎉</h1>
+
+    <!-- Message central explosif -->
+    <div id="message">JOYEUX<br>NOUVEL AN !</div>
+
+    <!-- Compte à rebours principal -->
+    <div id="countdown">5</div>
+
+    <!-- Voix de la foule dynamique -->
+    <div id="voice-crowd"></div>
+
+    <!-- Souhaits élégants -->
+    <div id="wishes" class="wishes">
+        <p>🍾 Santé, Amour, Prospérité 🍾</p>
+        <p>🌟 Succès et Bonheur en 2026 🌟</p>
+        <p>✨ Pour une année exceptionnelle ✨</p>
+    </div>
+
+    <!-- SIGNATURE PROFESSIONNELLE MAURICE PICASSO -->
+    <div id="signature">
+        <span class="name">MAURICE PICASSO</span>
+        <span class="handle">Mpicasso © 2026</span>
+    </div>
+
+    <!-- Musique de fond premium -->
+    <audio id="music" loop preload="metadata">
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+    </audio>
+
+    <script>
+        // État professionnel
+        class NewYearCelebration {
+            constructor() {
+                this.countdown = ['5', '4', '3', '2', '1', '🎉'];
+                this.voices = {
+                    0: "cinq !", 1: "quatre !", 2: "trois !", 
+                    3: "deux !", 4: "un !", 5: "bonne année !"
+                };
+                this.i = 0;
+                this.interval = null;
+                this.musicPlaying = false;
+                this.fireworksInterval = null;
+                this.crowdInterval = null;
+                this.initElements();
+                this.bindEvents();
+                this.startCountdown();
+            }
+
+            initElements() {
+                this.el = document.getElementById('countdown');
+                this.voiceEl = document.getElementById('voice-crowd');
+                this.messageEl = document.getElementById('message');
+                this.music = document.getElementById('music');
+                this.wishesEl = document.getElementById('wishes');
+                this.newyearEl = document.getElementById('newyear');
+                this.signatureEl = document.getElementById('signature');
+            }
+
+            bindEvents() {
+                window.startCountdown = () => this.startCountdown();
+                window.toggleMusic = () => this.toggleMusic();
+            }
+
+            createParticles(intensity = 60) {
+                for (let i = 0; i < intensity; i++) {
+                    setTimeout(() => {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle';
+                        particle.style.left = Math.random() * 100 + '%';
+                        particle.style.width = particle.style.height = 
+                            (Math.random() * 12 + 6) + 'px';
+                        particle.style.animationDuration = 
+                            (Math.random() * 3 + 2) + 's';
+                        document.body.appendChild(particle);
+                        setTimeout(() => particle.remove(), 5000);
+                    }, i * 12);
+                }
+            }
+
+            createFirework(x, y, color = '#FFD700') {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = x + 'px';
+                firework.style.top = y + 'px';
+                firework.style.background = color;
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 1200);
+            }
+
+            launchFireworks(intensity = 30) {
+                for (let i = 0; i < intensity; i++) {
+                    setTimeout(() => {
+                        const colors = ['#FFD700', '#FF006E', '#8338EC', '#06FFA5'];
+                        this.createFirework(
+                            Math.random() * window.innerWidth,
+                            Math.random() * (window.innerHeight * 0.6),
+                            colors[Math.floor(Math.random() * colors.length)]
+                        );
+                    }, i * 40);
+                }
+            }
+
+            speakVoice(text) {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'fr-FR';
+                    utterance.volume = 0.85;
+                    utterance.rate = 1.1;
+                    utterance.pitch = 0.9;
+                    speechSynthesis.speak(utterance);
+                }
+            }
+
+            startCountdown() {
+                this.reset();
+                this.i = 0;
+                this.el.textContent = this.countdown[0];
+                
+                this.interval = setInterval(() => {
+                    if (this.i < this.countdown.length) {
+                        this.updateCountdown();
+                        this.i++;
+                    } else {
+                        clearInterval(this.interval);
+                        this.celebrate();
+                    }
+                }, 1100);
+            }
+
+            updateCountdown() {
+                // Animation compte principal
+                this.el.textContent = this.countdown[this.i];
+                this.el.style.transform = `translate(-50%, -50%) scale(${1.3 + this.i * 0.45})`;
+                this.el.style.textShadow = `var(--shadow-gold), 0 0 ${60 + this.i * 25}px var(--neon-pink)`;
+                
+                // Voix foule synchronisée
+                this.voiceEl.textContent = this.voices[this.i].toUpperCase() + ' 🎊';
+                this.voiceEl.style.opacity = '1';
+                this.voiceEl.style.transform = `translate(-50%, -50%) scale(${1.4 + this.i * 0.25})`;
+                
+                // Voix synthétique
+                this.speakVoice(this.voices[this.i]);
+                
+                // Effets visuels progressifs
+                this.createParticles(40 + this.i * 10);
+                if (this.i >= 2) this.launchFireworks(20 + this.i * 5);
+            }
+
+            celebrate() {
+                // Explosion finale compte
+                this.el.textContent = '🎊🎊🎊';
+                this.el.style.transform = 'translate(-50%, -50%) scale(2.2)';
+                
+                // Message central dramatique
+                setTimeout(() => {
+                    this.messageEl.style.opacity = '1';
+                    this.messageEl.style.transform = 'translate(-50%, -50%) scale(1.3)';
+                    this.speakVoice('Joyeux Nouvel An !');
+                }, 300);
+                
+                // Éléments séquentiels
+                setTimeout(() => this.newyearEl.style.opacity = '1', 800);
+                setTimeout(() => this.wishesEl.style.opacity = '1', 1500);
+                setTimeout(() => this.signatureEl.style.animation = 'signatureGlow 1.5s ease forwards', 400);
+                
+                // Musique
+                this.music.play().catch(() => {});
+                this.musicPlaying = true;
+                
+                // Effets continus
+                this.fireworksInterval = setInterval(() => 
+                    this.launchFireworks(8), 120);
+                this.crowdInterval = setInterval(() => {
+                    const cheers = ['🎉 YEAH !', '🥳 BONNE ANNÉE !', '🎊 MAGNIFIQUE !'];
+                    this.voiceEl.textContent = cheers[Math.floor(Math.random() * cheers.length)];
+                    this.voiceEl.style.transform = `translate(-50%, -50%) scale(${1.2 + Math.random() * 0.4})`;
+                }, 900);
+                setInterval(() => this.createParticles(30), 700);
+            }
+
+            reset() {
+                speechSynthesis.cancel();
+                clearInterval(this.interval);
+                clearInterval(this.fireworksInterval);
+                clearInterval(this.crowdInterval);
+                
+                this.voiceEl.style.opacity = '0';
+                this.messageEl.style.opacity = '0';
+                this.messageEl.style.transform = 'translate(-50%, -50%) scale(0)';
+                this.newyearEl.style.opacity = '0';
+                this.wishesEl.style.opacity = '0';
+                this.signatureEl.style.animation = 'none';
+                this.el.style.transform = 'translate(-50%, -50%) scale(1.3)';
+            }
+
+            toggleMusic() {
+                if (this.musicPlaying) {
+                    this.music.pause();
+                    this.musicPlaying = false;
+                } else {
+                    this.music.play();
+                    this.musicPlaying = true;
+                }
+            }
+        }
+
+        // Initialisation professionnelle
+        window.addEventListener('load', () => {
+            window.celebration = new NewYearCelebration();
+        });
+    </script>
+</body>
+</html>

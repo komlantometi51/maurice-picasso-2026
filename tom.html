@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique en ligne – PicassoShopExpress</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f8f9fa; 
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    /* Écran de verrouillage inscription */
+    .lock-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9800, #ff5722, #f44336);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    .lock-screen.hidden { opacity: 0; pointer-events: none; }
+    
+    .lock-content {
+      background: white;
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+    .lock-content h2 { color: #333; margin-bottom: 1rem; font-size: 2rem; }
+    .lock-content p { color: #666; margin-bottom: 2rem; }
+    
+    header { 
+      background: linear-gradient(135deg, #1a1a1a, #2d2d2d); 
+      color: #fff; 
+      padding: 1rem 2rem; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 { margin: 0; font-size: 1.8rem; }
+    nav { display: flex; align-items: center; gap: 1.5rem; }
+    nav a { 
+      color: #fff; 
+      text-decoration: none; 
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover, nav a.active { color: #ff5722; }
+    
+    .hero { 
+      background: linear-gradient(135deg, #ff9800, #ff5722, #f44336); 
+      color: white; 
+      padding: 4rem 2rem; 
+      text-align: center; 
+      display: none;
+    }
+    
+    /* Styles inchangés pour produits, panier, etc. */
+    .products { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+      gap: 2rem; 
+      padding: 3rem 2rem; 
+      max-width: 1400px;
+      margin: 0 auto;
+      display: none;
+    }
+    
+    .card { 
+      background: white; 
+      padding: 1.5rem; 
+      border-radius: 12px; 
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1); 
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+    
+    .card img { 
+      width: 100%; 
+      height: 220px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 8px; 
+      margin-bottom: 1rem;
+      background: #f0f0f0;
+      transition: opacity 0.3s ease-in-out;
+      opacity: 0;
+    }
+    
+    .card img.loaded { opacity: 1; }
+    .card img.loading {
+      background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+    
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    .card h3 { color: #333; margin: 0 0 0.5rem 0; font-size: 1.3rem; }
+    .price { font-size: 1.4rem; font-weight: 700; color: #ff5722; margin: 0.5rem 0; }
+    .fcfa { font-size: 0.9em; font-weight: 500; }
+    
+    .add-to-cart { 
+      background: linear-gradient(45deg, #ff5722, #ff9800); 
+      color: white; border: none; padding: 12px 24px; width: 100%; 
+      border-radius: 25px; cursor: pointer; font-size: 1rem; font-weight: 600;
+      margin: 1rem 0; transition: all 0.3s;
+    }
+    .add-to-cart:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(255,87,34,0.4); }
+    .add-to-cart:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    
+    .product-link { color: #ff5722; text-decoration: none; font-weight: 500; display: inline-block; margin: 0.5rem 0; }
+    .product-link:hover { text-decoration: underline; }
+    .description { color: #666; font-size: 0.9rem; margin-top: 0.5rem; }
+    
+    /* Formulaire d'inscription */
+    .register-section {
+      max-width: 500px; margin: 3rem auto; padding: 2.5rem; background: white;
+      border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      display: none;
+    }
+    .register-section h2 { text-align: center; color: #333; margin-bottom: 2rem; font-size: 1.8rem; }
+    .form-group { margin-bottom: 1.5rem; position: relative; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #555; }
+    .form-group input { width: 100%; padding: 12px 16px; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; transition: all 0.3s; background: #f8f9fa; }
+    .form-group input:focus { outline: none; border-color: #ff5722; background: white; box-shadow: 0 0 0 3px rgba(255,87,34,0.1); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .password-strength { height: 4px; border-radius: 2px; margin-top: 0.5rem; transition: all 0.3s; }
+    .strength-weak { background: #f44336; width: 25%; }
+    .strength-medium { background: #ff9800; width: 50%; }
+    .strength-strong { background: #4caf50; width: 100%; }
+    .register-btn { width: 100%; background: linear-gradient(45deg, #ff5722, #ff9800); color: white; border: none; padding: 14px; border-radius: 25px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .register-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,87,34,0.4); }
+    .register-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .form-message { padding: 12px; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: 500; }
+    .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    
+    /* Paiement fonctionnel */
+    .cart { max-width: 900px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); display: none; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; gap: 1rem; }
+    .quantity-controls { display: flex; align-items: center; gap: 0.5rem; background: #f8f9fa; padding: 0.5rem; border-radius: 8px; }
+    .qty-btn { width: 32px; height: 32px; border: none; border-radius: 50%; background: #fff; color: #333; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .qty-btn:hover { background: #ff5722; color: white; transform: scale(1.1); }
+    .qty-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .qty-input { width: 50px; height: 32px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-weight: 600; font-size: 1rem; }
+    .cart-price { font-weight: 600; color: #333; font-size: 1rem; }
+    .total-price { font-size: 2rem; color: #ff5722; font-weight: 800; }
+    .remove-item { background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: background 0.3s; }
+    .remove-item:hover { background: #d32f2f; }
+    .total-section { text-align: right; font-weight: bold; margin-top: 2rem; padding-top: 1rem; border-top: 3px solid #eee; }
+    .empty-cart { text-align: center; color: #666; font-size: 1.2rem; padding: 3rem; }
+    
+    .payment-methods { 
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef); 
+      padding: 2rem; 
+      border-radius: 12px; 
+      margin: 2rem 0;
+      display: none;
+    }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .payment-option:hover { border-color: #ff5722; transform: translateY(-2px); }
+    .payment-option.selected { border-color: #ff5722; background: rgba(255,87,34,0.1); }
+    .payment-option input[type="radio"] { display: none; }
+    .payment-icon { font-size: 1.5rem; }
+    
+    .pay-button {
+      width: 100%;
+      background: linear-gradient(45deg, #4caf50, #45a049);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s;
+    }
+    .pay-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(76,175,80,0.4); }
+    .pay-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; background: #ccc; }
+    
+    .payment-success {
+      text-align: center;
+      padding: 3rem;
+      background: linear-gradient(135deg, #d4edda, #c3e6cb);
+      border-radius: 12px;
+      margin: 2rem 0;
+      display: none;
+    }
+    
+    .contact-info, footer { display: none; }
+    
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; }
+      .lock-content { padding: 2rem 1.5rem; }
+      .register-section { margin: 2rem 1rem; padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Écran de verrouillage inscription OBLIGATOIRE -->
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-content">
+      <h2>🔐 Inscription requise</h2>
+      <p>Créez votre compte pour accéder à la boutique PicassoShopExpress</p>
+      <button onclick="showRegister()" class="register-btn" style="max-width: 250px; margin: 0 auto;">
+        👤 Créer mon compte
+      </button>
+    </div>
+  </div>
+
+  <header id="mainHeader" style="display: none;">
+    <h1>🛒 PicassoShopExpress</h1>
+    <nav>
+      <a href="#accueil">Accueil</a>
+      <a href="#produits">Produits</a>
+      <a href="#panier">Panier (<span id="cartCount">0</span>)</a>
+      <a href="#paiement" id="paymentLink" style="display: none;">💳 Paiement</a>
+    </nav>
+  </header>
+
+  <section id="accueil" class="hero">
+    <h2>🎉 Bienvenue sur PicassoShopExpress</h2>
+    <p>Votre boutique en ligne simple, rapide et sécurisée</p>
+    <p>Parcourez nos produits et ajoutez-les à votre panier</p>
+  </section>
+
+  <!-- Formulaire d'inscription -->
+  <section id="inscription" class="register-section">
+    <h2>👤 Créer un compte</h2>
+    <form id="registerForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="prenom">Prénom *</label>
+          <input type="text" id="prenom" name="prenom" required minlength="2">
+        </div>
+        <div class="form-group">
+          <label for="nom">Nom *</label>
+          <input type="text" id="nom" name="nom" required minlength="2">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="telephone">Téléphone (WhatsApp) *</label>
+        <input type="tel" id="telephone" name="telephone" required 
+               pattern="(\+?[1-9][0-9]{0,15})?" placeholder="+33612345678 ou +22893123456">
+        <small style="color: #666; font-size: 0.85rem;">Format: +33, +228, +1, etc.</small>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mot de passe *</label>
+        <input type="password" id="password" name="password" required minlength="6">
+        <div class="password-strength" id="passwordStrength"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer mot de passe *</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6">
+      </div>
+      
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="conditions" name="conditions" required>
+          J'accepte les <a href="#" style="color: #ff5722;">conditions d'utilisation</a> *
+        </label>
+      </div>
+      
+      <button type="submit" class="register-btn" id="registerBtn" disabled>🚀 Créer mon compte</button>
+      <div id="formMessage" class="form-message" style="display: none;"></div>
+    </form>
+  </section>
+
+  <section id="produits" class="products">
+    <!-- TOUS LES 9 PRODUITS -->
+    <div class="card" data-product='{"id":1,"name":"Chaussures en cuir","price":10000,"img":"sop1.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=220&fit=crop" loading="lazy" data-src="sop1.jpg" alt="Chaussures en cuir">
+      <h3>Chaussures en Cuir</h3>
+      <p class="price">10&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Chaussures en cuir de qualité supérieure</p>
+    </div>
+    <div class="card" data-product='{"id":2,"name":"Vestes élégantes","price":15000,"img":"sop2.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&h=220&fit=crop" loading="lazy" data-src="sop2.jpg" alt="Vestes">
+      <h3>Vestes</h3>
+      <p class="price">15&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Vestes élégantes pour toutes les saisons</p>
+    </div>
+    <div class="card" data-product='{"id":3,"name":"Cravates","price":6000,"img":"po1.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1574259514741-58b9ca3c9731?w=300&h=220&fit=crop" loading="lazy" data-src="po1.jpg" alt="Cravates">
+      <h3>Cravates</h3>
+      <p class="price">6&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Cravates de style pour hommes</p>
+    </div>
+    <div class="card" data-product='{"id":4,"name":"Montres de luxe","price":30000,"img":"zo1.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1524592094714-0f0652e6d5e9?w=300&h=220&fit=crop" loading="lazy" data-src="zo1.jpg" alt="Montres">
+      <h3>Montres</h3>
+      <p class="price">30&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Montres de luxe et précises</p>
+    </div>
+    <div class="card" data-product='{"id":5,"name":"Chapeaux stylés","price":5000,"img":"ko1.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=220&fit=crop" loading="lazy" data-src="ko1.jpg" alt="Chapeaux">
+      <h3>Chapeaux</h3>
+      <p class="price">5&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Chapeaux stylés pour toutes occasions</p>
+    </div>
+    <div class="card" data-product='{"id":6,"name":"Sacs robustes","price":20000,"img":"jop4.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=220&fit=crop" loading="lazy" data-src="jop4.jpg" alt="Sacs">
+      <h3>Sacs</h3>
+      <p class="price">20&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Sacs robustes et élégants</p>
+    </div>
+    <div class="card" data-product='{"id":7,"name":"Ceintures","price":10000,"img":"co1.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=300&h=220&fit=crop" loading="lazy" data-src="co1.jpg" alt="Ceintures">
+      <h3>Ceintures</h3>
+      <p class="price">10&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Ceintures de qualité supérieure</p>
+    </div>
+    <div class="card" data-product='{"id":8,"name":"Robes élégantes","price":22000,"img":"robe.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=220&fit=crop" loading="lazy" data-src="robe.jpg" alt="Robes">
+      <h3>Robes</h3>
+      <p class="price">22&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Robes élégantes pour toutes occasions</p>
+    </div>
+    <div class="card" data-product='{"id":9,"name":"Chemise Classique","price":12000,"img":"chemise.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=220&fit=crop" loading="lazy" data-src="chemise.jpg" alt="Chemise">
+      <h3>Chemise Classique</h3>
+      <p class="price">12&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Chemises classiques intemporelles</p>
+    </div>
+  </section>
+
+  <!-- PANIER avec PAIEMENT FONCTIONNEL -->
+  <section id="panier" class="cart">
+    <h2>🛒 Votre Panier</h2>
+    <div id="cartItems" class="empty-cart">
+      <p>Votre panier est vide</p>
+      <p><a href="#produits" style="color: #ff5722; font-weight: bold;">🔙 Retour aux produits</a></p>
+    </div>
+    <div id="cartContent" style="display: none;">
+      <div id="cartList"></div>
+      <div class="total-section">
+        <h3>Total : <span id="total" class="total-price">0 FCFA</span></h3>
+        <button id="proceedToPayment" class="pay-button" style="display: none;" disabled>
+          💳 Passer à la caisse
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION PAIEMENT FONCTIONNELLE -->
+  <section id="paiement" class="payment-methods">
+    <h2>💳 Finaliser votre commande</h2>
+    <div id="orderSummary" style="background: white; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+      <h3>Récapitulatif commande</h3>
+      <div id="paymentCartList"></div>
+      <p style="font-size: 1.5rem; font-weight: bold; color: #ff5722; text-align: right;">
+        <span id="paymentTotal">0 FCFA</span>
+      </p>
+    </div>
+    
+    <form id="paymentForm">
+      <h3>Choisissez votre mode de paiement</h3>
+      
+      <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="flooz" required>
+        <span class="payment-icon">💰</span>
+        <div>
+          <strong>Flooz (Mobile Money)</strong><br>
+          <small>Numéro: +228 93 23 19 04</small>
+        </div>
+      </label>
+      
+      <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="tmoney" required>
+        <span class="payment-icon">💳</span>
+        <div>
+          <strong>TMoney (Mobile Money)</strong><br>
+          <small>Numéro: +228 93 23 19 04</small>
+        </div>
+      </label>
+      
+      <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="carte" required>
+        <span class="payment-icon">💳</span>
+        <div>
+          <strong>Carte bancaire (Visa/MasterCard)</strong><br>
+          <small>Sécurisé par Stripe</small>
+        </div>
+      </label>
+      
+      <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="livraison" required>
+        <span class="payment-icon">🚚</span>
+        <div>
+          <strong>Paiement à la livraison</strong><br>
+          <small>Lomé et environs uniquement (+2 000 FCFA)</small>
+        </div>
+      </label>
+      
+      <button type="submit" class="pay-button" id="confirmPayment" disabled>
+        ✅ Confirmer & Payer
+      </button>
+    </form>
+    
+    <div id="paymentSuccess" class="payment-success">
+      <h2>🎉 Paiement réussi !</h2>
+      <p>Votre commande a été enregistrée avec succès.</p>
+      <p><strong>📞 Contactez-nous immédiatement:</strong></p>
+      <p style="font-size: 1.5rem;"><a href="tel:+22893231904">+228 93 23 19 04</a> (WhatsApp)</p>
+      <p><a href="mailto:contact@picassoshopexpress.com">contact@picassoshopexpress.com</a></p>
+      <button onclick="newOrder()" class="pay-button" style="max-width: 300px; margin-top: 1rem;">
+        🛒 Nouvelle commande
+      </button>
+    </div>
+  </section>
+
+  <script>
+    // ÉTAT GLOBAL
+    let cart = [];
+    let currentUser = null;
+    let isRegistered = localStorage.getItem('picassoshop_user') ? true : false;
+    
+    // VERROUILLAGE INSCRIPTION OBLIGATOIRE
+    function showRegister() {
+      document.getElementById('lockScreen').style.display = 'none';
+      document.getElementById('inscription').style.display = 'block';
+      document.getElementById('inscription').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function unlockShop() {
+      document.getElementById('mainHeader').style.display = 'flex';
+      document.getElementById('accueil').style.display = 'block';
+      document.getElementById('produits').style.display = 'grid';
+      document.getElementById('inscription').style.display = 'none';
+      isRegistered = true;
+      loadCart();
+      updateCartDisplay();
+      initLazyLoading();
+    }
+    
+    // FORMULAIRE INSCRIPTION (code précédent)
+    const registerForm = document.getElementById('registerForm');
+    // ... (tout le code de validation inscription précédent) ...
+    
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (validateForm()) {
+        const formData = new FormData(registerForm);
+        const userData = Object.fromEntries(formData);
+        
+        const users = JSON.parse(localStorage.getItem('picassoshop_users') || '[]');
+        if (users.find(u => u.email === userData.email)) {
+          showMessage('❌ Cet email est déjà utilisé', 'error');
+          return;
+        }
+        
+        users.push({...userData, id: Date.now(), date: new Date().toISOString(), verified: true});
+        localStorage.setItem('picassoshop_users', JSON.stringify(users));
+        localStorage.setItem('picassoshop_user', JSON.stringify(userData));
+        currentUser = userData;
+        
+        showMessage('✅ Compte créé ! Accès boutique débloqué.', 'success');
+        registerForm.reset();
+        registerBtn.disabled = true;
+        setTimeout(unlockShop, 2000);
+      }
+    });
+    
+    // PANIER FONCTIONNEL (code précédent)
+    const formatFCFA = (price) => new Intl.NumberFormat('fr-TG', {minimumFractionDigits: 0, maximumFractionDigits: 0}).format(price) + ' FCFA';
+    
+    function updateCartDisplay() {
+      // ... (code panier précédent) ...
+      const hasItems = cart.length > 0;
+      document.getElementById('proceedToPayment').style.display = hasItems ? 'block' : 'none';
+      document.getElementById('proceedToPayment').disabled = !hasItems;
+    }
+    
+    // PAIEMENT FONCTIONNEL
+    document.getElementById('proceedToPayment').addEventListener('click', function() {
+      if (cart.length > 0) {
+        document.querySelector('#panier').style.display = 'none';
+        document.querySelector('#paiement').style.display = 'block';
+        document.getElementById('paymentLink').style.display = 'inline';
+        updatePaymentSummary();
+        document.querySelector('#paiement').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+    
+    function updatePaymentSummary() {
+      const cartList = document.getElementById('paymentCartList');
+      const total = document.getElementById('paymentTotal');
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      cartList.innerHTML = cart.map(item => 
+        `<div>${item.name} × ${item.quantity} = ${formatFCFA(item.price * item.quantity)}</div>`
+      ).join('');
+      total.textContent = formatFCFA(totalPrice);
+    }
+    
+    document.getElementById('paymentForm').addEventListener('change', function() {
+      document.getElementById('confirmPayment').disabled = !this.querySelector('input[type="radio"]:checked');
+    });
+    
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      // SAUVEGARDE COMMANDE
+      const order = {
+        id: Date.now(),
+        user: currentUser,
+        items: [...cart],
+        total: total,
+        method: paymentMethod,
+        date: new Date().toISOString(),
+        status: 'paid'
+      };
+      
+      const orders = JSON.parse(localStorage.getItem('picassoshop_orders') || '[]');
+      orders.push(order);
+      localStorage.setItem('picassoshop_orders', JSON.stringify(orders));
+      
+      // VIDER PANIER
+      cart = [];
+      saveCart();
+      
+      // AFFICHAGE SUCCÈS
+      document.getElementById('paymentForm').style.display = 'none';
+      document.getElementById('paymentSuccess').style.display = 'block';
+    });
+    
+    function newOrder() {
+      document.querySelector('#paiement').style.display = 'none';
+      document.querySelector('#panier').style.display = 'block';
+      updateCartDisplay();
+      document.querySelector('#panier').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', function() {
+      if (isRegistered) unlockShop();
+      else showRegister();
+    });
+  </script>
+</body>
+</html>

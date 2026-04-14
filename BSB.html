@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique en ligne – PicassoShopExpress</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f8f9fa; 
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    header { 
+      background: linear-gradient(135deg, #1a1a1a, #2d2d2d); 
+      color: #fff; 
+      padding: 1rem 2rem; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    header h1 { margin: 0; font-size: 1.8rem; }
+    nav a { 
+      color: #fff; 
+      margin-left: 1.5rem; 
+      text-decoration: none; 
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover { color: #ff5722; }
+    
+    .hero { 
+      background: linear-gradient(135deg, #ff9800, #ff5722, #f44336); 
+      color: white; 
+      padding: 4rem 2rem; 
+      text-align: center; 
+    }
+    .hero h2 { font-size: 2.5rem; margin: 0 0 1rem 0; }
+    .hero p { font-size: 1.2rem; margin: 0.5rem 0; }
+    
+    .products { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+      gap: 2rem; 
+      padding: 3rem 2rem; 
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .card { 
+      background: white; 
+      padding: 1.5rem; 
+      border-radius: 12px; 
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1); 
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+    
+    .card img { 
+      width: 100%; 
+      border-radius: 8px; 
+      height: 220px;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+    
+    .card h3 { 
+      color: #333; 
+      margin: 0 0 0.5rem 0; 
+      font-size: 1.3rem;
+    }
+    
+    .price { 
+      font-size: 1.4rem; 
+      font-weight: bold; 
+      color: #ff5722; 
+      margin: 0.5rem 0;
+    }
+    
+    .add-to-cart { 
+      background: linear-gradient(45deg, #ff5722, #ff9800); 
+      color: white; 
+      border: none; 
+      padding: 12px 24px; 
+      width: 100%; 
+      border-radius: 25px; 
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 1rem 0;
+      transition: all 0.3s;
+    }
+    .add-to-cart:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(255,87,34,0.4);
+    }
+    
+    .product-link {
+      color: #ff5722;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      margin: 0.5rem 0;
+    }
+    .product-link:hover { text-decoration: underline; }
+    
+    .description { 
+      color: #666; 
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    
+    .cart { 
+      max-width: 900px;
+      margin: 2rem auto; 
+      padding: 2rem; 
+      background: white; 
+      border-radius: 12px; 
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .remove-item {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    
+    .total-section {
+      text-align: right;
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      color: #ff5722;
+      padding-top: 1rem;
+      border-top: 3px solid #eee;
+    }
+    
+    .empty-cart {
+      text-align: center;
+      color: #666;
+      font-size: 1.2rem;
+      padding: 3rem;
+    }
+    
+    .payment-methods {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+    }
+    
+    .contact-info {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 3rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    
+    footer { 
+      background: #1a1a1a; 
+      color: #ccc; 
+      text-align: center; 
+      padding: 2rem; 
+      margin-top: 3rem;
+    }
+    
+    @media (max-width: 768px) {
+      .products { grid-template-columns: 1fr; padding: 1rem; }
+      header { flex-direction: column; gap: 1rem; padding: 1rem; }
+      nav a { margin: 0 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🛒 PicassoShopExpress</h1>
+    <nav>
+      <a href="#accueil">Accueil</a>
+      <a href="#produits">Produits</a>
+      <a href="#panier">Panier (<span id="cartCount">0</span>)</a>
+      <a href="#contact">Contact</a>
+      <a href="#A Propos">A Propos</a>
+    </nav>
+  </header>
+
+  <section id="accueil" class="hero">
+    <h2>Bienvenue sur PicassoShopExpress</h2>
+    <p>Votre boutique en ligne simple, rapide et sécurisée</p>
+    <p>Cliquez sur "Ajouter au panier" pour chaque produit de votre choix</p>
+  </section>
+
+  <section id="produits" class="products">
+    <div class="card" data-product='{"name":"Chaussures en cuir","price":10000,"img":"sop1.jpg"}'>
+      <img src="sop1.jpg" alt="Chaussures en cuir" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=220&fit=crop'">
+      <h3>Chaussures en Cuir</h3>
+      <p class="price">10 000 FCFA</p>
+      <a href="h.html" class="product-link">Voir les chaussures</a>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Chaussures en cuir de qualité supérieure</p>
+    </div>
+
+    <div class="card" data-product='{"name":"Vestes élégantes","price":15000,"img":"sop2.jpg"}'>
+      <img src="sop2.jpg" alt="Vestes" onerror="this.src='https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&h=220&fit=crop'">
+      <h3>Vestes</h3>
+      <p class="price">15 000 FCFA</p>
+      <a href="p.html" class="product-link">Voir les vestes</a>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Vestes élégantes pour toutes les saisons</p>
+    </div>
+
+    <div class="card" data-product='{"name":"Cravates","price":6000,"img":"po1.jpg"}'>
+      <img src="po1.jpg" alt="Cravates" onerror="this.src='https://images.unsplash.com/photo-1574259514741-58b9ca3c9731?w=300&h=220&fit=crop'">
+      <h3>Cravates</h3>
+      <p class="price">6 000 FCFA</p>
+      <a href="t.html" class="product-link">Voir les cravates</a>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Cravates de style pour hommes</p>
+    </div>
+
+    <div class="card" data-product='{"name":"Montres de luxe","price":30000,"img":"zo1.jpg"}'>
+      <img src="zo1.jpg" alt="Montres" onerror="this.src='https://images.unsplash.com/photo-1524592094714-0f0652e6d5e9?w=300&h=220&fit=crop'">
+      <h3>Montres</h3>
+      <p class="price">30 000 FCFA</p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Montres de luxe et précises</p>
+    </div>
+
+    <div class="card" data-product='{"name":"Chapeaux stylés","price":5000,"img":"ko1.jpg"}'>
+      <img src="ko1.jpg" alt="Chapeaux" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=220&fit=crop'">
+      <h3>Chapeaux</h3>
+      <p class="price">5 000 FCFA</p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Chapeaux stylés pour toutes occasions</p>
+    </div>
+
+    <div class="card" data-product='{"name":"Sacs robustes","price":20000,"img":"jop4.jpg"}'>
+      <img src="jop4.jpg" alt="Sacs" onerror="this.src='https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=220&fit=crop'">
+      <h3>Sacs</h3>
+      <p class="price">20 000 FCFA</p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Sacs robustes et élégants</p>
+    </div>
+
+    <div class="card" data-product='{"name":"Ceintures","price":10000,"img":"co1.jpg"}'>
+      <img src="co1.jpg" alt="Ceintures" onerror="this.src='https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=300&h=220&fit=crop'">
+      <h3>Ceintures</h3>
+      <p class="price">10 000 FCFA</p>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Ceintures de qualité supérieure</p>
+    </div>
+
+    <div class="card" data-product='{"name":"Robes élégantes","price":22000,"img":"robe.jpg"}'>
+      <img src="robe.jpg" alt="Robes" onerror="this.src='https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=220&fit=crop'">
+      <h3>Robes</h3>
+      <p class="price">22 000 FCFA</p>
+      <a href="https://www.pinterest.fr/search/pins/?q=robe" class="product-link">Voir les robes</a>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Robes élégantes pour toutes occasions</p>
+    </div>
+
+    <div class="card" data-product='{"name":"Chemise Classique","price":12000,"img":"chemise.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=220&fit=crop" alt="Chemise Classique">
+      <h3>Chemise Classique</h3>
+      <p class="price">12 000 FCFA</p>
+      <a href="https://www.pinterest.fr/search/pins/?q=chemise" class="product-link">Voir les chemises</a>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Chemises classiques intemporelles</p>
+    </div>
+
+  </section>
+
+  <section id="panier" class="cart">
+    <h2>🛒 Votre Panier</h2>
+    
+    <div id="cartItems" class="empty-cart">
+      <p>Votre panier est vide</p>
+      <p><a href="#produits" style="color: #ff5722; font-weight: bold;">🔙 Retour aux produits</a></p>
+    </div>
+    
+    <div id="cartContent" style="display: none;">
+      <div id="cartList"></div>
+      <div class="total-section">
+        <h3>Total : <span id="total">0</span> FCFA</h3>
+        <div style="margin-top: 1rem;">
+          <button class="add-to-cart" onclick="clearCart()" style="max-width: 200px; background: #f44336;">🗑️ Vider le panier</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-methods">
+      <h3>💳 Moyens de paiement disponibles</h3>
+      <p>✔ Mobile Money (Flooz, TMoney)</p>
+      <p>✔ Carte bancaire (Visa, MasterCard)</p>
+      <p>✔ PayPal / Stripe</p>
+      <p>✔ Paiement à la livraison (Lomé et environs)</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+      <p><strong>📞 Contactez-nous pour finaliser votre commande :</strong></p>
+      <p>WhatsApp/Appelez : <a href="tel:+22893231904" style="color: #ff5722; font-size: 1.3rem; font-weight: bold;">+228 93 23 19 04</a></p>
+      <p>Email : <a href="mailto:contact@picassoshopexpress.com" style="color: #666;">contact@picassoshopexpress.com</a></p>
+    </div>
+  </section>
+
+  <section id="contact" class="contact-info">
+    <h2>📧 Contactez-nous</h2>
+    <p><strong>Email :</strong> contact@picassoshopexpress.com</p>
+    <p><strong>Téléphone :</strong> +228 93 23 19 04</p>
+    <p><strong>Adresse :</strong> Lomé, Maritime, Togo</p>
+    <p><strong>Horaires :</strong> Lun-Sam 8h-19h</p>
+  </section>
+
+  <footer>
+    <p>© 2025 PicassoShopExpress – Tous droits réservés | Fabriqué avec ❤️ à Lomé, Togo</p>
+  </footer>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function updateCartDisplay() {
+      const cartCount = document.getElementById('cartCount');
+      const cartItems = document.getElementById('cartItems');
+      const cartContent = document.getElementById('cartContent');
+      const cartList = document.getElementById('cartList');
+      const total = document.getElementById('total');
+
+      cartCount.textContent = cart.length;
+
+      if (cart.length === 0) {
+        cartItems.style.display = 'block';
+        cartContent.style.display = 'none';
+      } else {
+        cartItems.style.display = 'none';
+        cartContent.style.display = 'block';
+        
+        cartList.innerHTML = cart.map((item, index) => `
+          <div class="cart-item">
+            <div>
+              <strong>${item.name}</strong><br>
+              <small>${item.price.toLocaleString()} FCFA</small>
+            </div>
+            <button class="remove-item" onclick="removeFromCart(${index})">Supprimer</button>
+          </div>
+        `).join('');
+
+        const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+        total.textContent = totalPrice.toLocaleString();
+      }
+    }
+
+    function addToCart(product) {
+      cart.push(product);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+      alert(`✅ ${product.name} ajouté au panier !`);
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+    }
+
+    function clearCart() {
+      if (confirm('Vider complètement le panier ?')) {
+        cart = [];
+        localStorage.removeItem('cart');
+        updateCartDisplay();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCartDisplay();
+      
+      document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+          const card = this.closest('.card');
+          const productData = JSON.parse(card.dataset.product);
+          addToCart(productData);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

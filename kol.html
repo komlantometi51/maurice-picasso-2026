@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- SEO Meta 2026 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Hub Togo - iPhone 16, Samsung S25, Accessoires | Lomé 2026</title>
+    <meta name="description" content="Meilleurs prix smartphones Lomé 2026. iPhone 16 Pro, Samsung S25 Ultra, AirPods Pro 2. Livraison gratuite Lomé 24h. Mobile Money, Flooz, TMoney.">
+    <meta name="keywords" content="iphone lomé, samsung togo, mobile hub, boutique smartphone tog, accessoires iphone">
+    
+    <!-- Open Graph / SEO Social -->
+    <meta property="og:title" content="Mobile Hub Togo - Meilleurs prix smartphones Lomé">
+    <meta property="og:description" content="iPhone 16, Samsung S25, Accessoires Premium. Livraison 24h Lomé">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1695902572575-5a91d5d9a8f7?w=1200">
+    <meta property="og:url" content="https://mobilehub.tg">
+    <meta property="og:type" content="website">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Google Analytics GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-mobile-alt"></i>
+            <div>
+                <h1>Mobile Hub Togo</h1>
+                <span class="slogan">📍 Lomé • Livraison 24h • +228 93 23 19 04</span>
+            </div>
+        </div>
+        <nav class="header-nav">
+            <button id="search-btn" title="Rechercher"><i class="fas fa-search"></i></button>
+            <button id="cart-btn" class="nav-btn primary" title="Panier">
+                <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
+            </button>
+            <button id="user-btn" title="Compte"><i class="fas fa-user"></i></button>
+        </nav>
+    </header>
+
+    <!-- Chatbot IA Toggle -->
+    <button id="chatbot-toggle" class="chatbot-toggle">
+        <i class="fas fa-comments"></i> Chat IA
+    </button>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>🔥 iPhone 16 Pro Max • Samsung S25 Ultra</h2>
+            <p>Meilleurs prix Lomé 2026 • Garantie 24 mois • Livraison gratuite</p>
+            <div class="hero-cta">
+                <button class="btn-primary-large" onclick="scrollToProducts()">
+                    <i class="fas fa-rocket"></i> Voir Nouveautés
+                </button>
+                <button class="btn-secondary-large" onclick="document.getElementById('search-input').focus()">
+                    <i class="fas fa-search"></i> Rechercher
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters & Search -->
+    <section class="filters">
+        <input type="text" id="search-input" placeholder="🔍 iPhone 16, Samsung S25, AirPods...">
+        <select id="category-filter">
+            <option value="">Toutes catégories</option>
+            <option value="smartphone">📱 Smartphones</option>
+            <option value="accessoire">🔌 Accessoires</option>
+            <option value="tablette">📱 Tablettes</option>
+            <option value="montre">⌚ Montres</option>
+        </select>
+        <select id="sort-filter">
+            <option value="price-asc">💰 Prix croissant</option>
+            <option value="price-desc">💰 Prix décroissant</option>
+            <option value="name">📝 A-Z</option>
+            <option value="popular">⭐ Populaires</option>
+        </select>
+    </section>
+
+    <!-- Products -->
+    <main id="product-grid" class="products-grid">
+        <div class="loading">Chargement des produits...</div>
+    </main>
+
+    <!-- Modals (Cart, User, Search) -->
+    <div id="cart-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-shopping-cart"></i> Panier</h2>
+                <button class="close-modal" onclick="closeModal('cart-modal')">&times;</button>
+            </div>
+            <div id="cart-items-list"></div>
+            <div class="cart-footer">
+                <div class="cart-summary">
+                    <div>Sous-total: <span id="cart-subtotal">0</span> FCFA</div>
+                    <div>Livraison Lomé: <span class="free">GRATUITE</span></div>
+                    <hr>
+                    <div class="cart-total">Total: <span id="cart-total-price">0</span> FCFA</div>
+                </div>
+                <!-- Stripe Integration -->
+                <div id="stripe-payment" class="payment-section hidden">
+                    <div id="payment-element">
+                        <!-- Stripe Elements va s'injecter ici -->
+                    </div>
+                    <button id="submit-payment" class="btn-danger">
+                        <i class="fas fa-lock"></i> Payer avec Stripe
+                    </button>
+                    <div class="payment-methods">
+                        <small>Ou <strong>Flooz/TMoney</strong> +228 93 23 19 04</small>
+                    </div>
+                </div>
+                <button class="btn-primary checkout-btn" onclick="showPaymentForm()">
+                    <i class="fas fa-credit-card"></i> Paiement Sécurisé
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div id="user-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="user-modal-title"><i class="fas fa-user"></i> Connexion</h2>
+                <button class="close-modal" onclick="closeModal('user-modal')">&times;</button>
+            </div>
+            <form id="auth-form">
+                <input type="text" id="username" placeholder="👤 Nom complet" required>
+                <input type="email" id="user-email" placeholder="📧 Email" required>
+                <input type="tel" id="user-phone" placeholder="📱 +228 XX XX XX XX">
+                <input type="password" id="password" placeholder="🔒 Mot de passe" required>
+                <div class="auth-actions">
+                    <button type="button" class="btn-primary" onclick="handleAuth('login')">Connexion</button>
+                    <button type="button" class="btn-secondary" onclick="handleAuth('register')">S'inscrire</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chatbot IA -->
+    <div id="chatbot-container" class="chatbot-container hidden">
+        <div class="chatbot-header">
+            <span>🤖 Assistant IA Mobile Hub</span>
+            <button onclick="toggleChatbot()" class="chatbot-close">×</button>
+        </div>
+        <div id="chatbot-messages" class="chatbot-messages"></div>
+        <div class="chatbot-input-container">
+            <input type="text" id="chatbot-input" placeholder="Posez votre question...">
+            <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="script.js"></script>
+    <!-- PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>

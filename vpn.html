@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PicassoShopExpress - Boutique Lomé</title>
+    <link rel="stylesheet" href="togo.css">
+</head>
+<body>
+    <header>
+        <h1>🛒 PicassoShopExpress</h1>
+        <nav>
+            <a href="#accueil">Accueil</a>
+            <a href="#produits">Produits</a>
+            <a href="#panier">Panier (<span id="cartCount">0</span>)</a>
+            <a href="#contact">Contact</a>
+            <a href="#apropos">A Propos</a>
+        </nav>
+    </header>
+
+    <section id="accueil" class="hero">
+        <h2>Bienvenue sur PicassoShopExpress</h2>
+        <p>Votre boutique en ligne simple, rapide et sécurisée</p>
+        <p>Cliquez sur "Ajouter au panier" pour commander</p>
+    </section>
+
+    <section id="produits" class="products">
+        <div class="card" data-product='{"name":"Chaussures en cuir","price":10000,"img":"sop1.jpg"}'>
+            <img src="sop1.jpg" alt="Chaussures" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=220&fit=crop'">
+            <h3>Chaussures en Cuir</h3>
+            <p class="price">10 000 FCFA</p>
+            <a href="h.html" class="product-link">Voir chaussures</a>
+            <button class="add-to-cart">➕ Ajouter</button>
+            <p class="description">Cuir qualité supérieure</p>
+        </div>
+
+        <div class="card" data-product='{"name":"Vestes élégantes","price":15000,"img":"sop2.jpg"}'>
+            <img src="sop2.jpg" alt="Vestes" onerror="this.src='https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&h=220&fit=crop'">
+            <h3>Vestes Élégantes</h3>
+            <p class="price">15 000 FCFA</p>
+            <a href="p.html" class="product-link">Voir vestes</a>
+            <button class="add-to-cart">➕ Ajouter</button>
+            <p class="description">Pour toutes saisons</p>
+        </div>
+
+
+    </section>
+
+
+    <section id="panier" class="cart">
+
+    </section>
+
+    <script src="benin.js"></script>
+</body>
+</html>

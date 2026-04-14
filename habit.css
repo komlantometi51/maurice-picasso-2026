@@ -1,0 +1,78 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: beige;
+    min-height: 100vh; 
+    text-align: center;
+}
+header {
+    background: rgb(63, 121, 229);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+}
+header h2 {
+    font-size: 22px;
+    background: #0fe34f;
+    color: white;
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
+}
+.logo { 
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+}
+nav ul {
+    display: flex;
+    list-style: none; 
+    gap: 25px; 
+    margin: 0;
+    padding: 0;
+}
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: 0.3s; 
+}
+nav a:hover {
+    background: white;
+    color: rgb(63, 121, 229);
+}
+.contenair {  
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    padding: 30px;
+    gap: 40px; 
+}
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    width: 260px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+   
+    margin-bottom: 20px; 
+}
+.card img {
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+footer {
+    background: rgb(63, 121, 229);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+
+}
+

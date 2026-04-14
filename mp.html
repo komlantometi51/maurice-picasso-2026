@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Bonne Année 2026 - MAURICE PICASSO</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #000, #ff006e, #8338ec, #3a86ff, #06ffa5);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: #fff;
+            font-family: 'Arial Black', Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Particules de confettis */
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Compte à rebours principal */
+        #countdown {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(6em, 20vw, 16em);
+            text-shadow: 0 0 40px #ffd700, 0 0 80px #ff006e;
+            z-index: 10;
+            text-align: center;
+        }
+
+        /* Voix de la foule */
+        #voice-crowd {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(2.5em, 7vw, 5em);
+            color: #fff;
+            opacity: 0;
+            z-index: 12;
+            text-shadow: 0 0 20px #fff;
+        }
+
+        /* Message final */
+        #message {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: clamp(2em, 8vw, 5em);
+            color: #ffd700;
+            text-shadow: 0 0 30px #ffd700;
+            opacity: 0;
+            z-index: 15;
+            text-align: center;
+        }
+
+        /* Titre Bonne Année */
+        #newyear {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(2em, 7vw, 4.5em);
+            opacity: 0;
+            animation: fadeInUp 1s ease 6s forwards;
+            text-shadow: 0 0 25px #fff;
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translate(-50%, -30%); }
+        }
+
+        /* Souhaits */
+        .wishes {
+            position: absolute;
+            bottom: 28%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 1.3em;
+            opacity: 0;
+            animation: fadeIn 1s ease 8s forwards;
+            max-width: 90%;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* SIGNATURE MAURICE PICASSO */
+        #signature {
+            position: fixed;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(1em, 3vw, 1.8em);
+            color: #ffd700;
+            text-shadow: 0 0 15px #ffd700;
+            opacity: 0;
+            animation: signatureGlow 2s ease 3s forwards;
+            z-index: 25;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 3px;
+            border: 2px solid rgba(255,215,0,0.3);
+            padding: 15px 30px;
+            border-radius: 50px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        #signature .name { font-size: 1.4em; display: block; margin-bottom: 5px; }
+        #signature .handle { font-size: 0.7em; color: #fff; font-weight: normal; letter-spacing: 2px; }
+
+        @keyframes signatureGlow {
+            0% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); text-shadow: 0 0 25px #ffd700, 0 0 50px #ff006e; }
+            100% { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
+
+        /* Boutons */
+        .controls { position: absolute; top: 10px; right: 10px; z-index: 20; }
+        button {
+            background: rgba(255,255,255,0.2); border: 2px solid #ffd700; color: #ffd700;
+            padding: 10px 20px; margin: 0 5px; border-radius: 25px; cursor: pointer;
+            font-weight: bold; transition: all 0.3s ease;
+        }
+        button:hover { background: #ffd700; color: #000; transform: scale(1.1); }
+
+        /* Feux d'artifice */
+        .firework { position: absolute; width: 4px; height: 4px; background: #ffd700; border-radius: 50%; pointer-events: none; }
+        .firework::before {
+            content: ''; position: absolute; width: 100%; height: 100%; background: inherit;
+            border-radius: 50%; animation: explode 1s ease-out forwards;
+        }
+        @keyframes explode { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(20); opacity: 0; } }
+    </style>
+</head>
+<body>
+    <!-- Contrôles -->
+    <div class="controls">
+        <button onclick="startCountdown()">🔄 Recommencer</button>
+        <button onclick="toggleMusic()">🎵 Musique</button>
+    </div>
+
+    <!-- Titre -->
+    <h1 id="newyear">🎉 BONNE ANNÉE 2026 🎉</h1>
+
+    <!-- MESSAGE CENTRAL -->
+    <div id="message">JOYEUX<br>NOUVEL AN !</div>
+
+    <!-- Compte à rebours PRINCIPAL -->
+    <div id="countdown">5</div>
+
+    <!-- VOIX DE LA FOULE -->
+    <div id="voice-crowd"></div>
+
+    <!-- Souhaits -->
+    <div id="wishes" class="wishes">
+        <p>🍾 Santé, Amour, Prospérité 🍾</p>
+        <p>🌟 Succès et Bonheur 🌟</p>
+        <p>✨ Toute l'année 2026 ✨</p>
+    </div>
+
+    <!-- SIGNATURE -->
+    <div id="signature">
+        <span class="name">MAURICE PICASSO</span>
+        <span class="handle">Mpicasso</span>
+    </div>
+
+    <!-- Audio Musique -->
+    <audio id="music" loop preload="auto">
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+    </audio>
+
+    <script>
+        let countdown = ['5', '4', '3', '2', '1', '🎉'];
+        let i = 0;
+        let interval, musicPlaying = false, fireworksInterval, crowdInterval;
+        
+        const el = document.getElementById('countdown');
+        const voiceEl = document.getElementById('voice-crowd');
+        const messageEl = document.getElementById('message');
+        const music = document.getElementById('music');
+        const wishesEl = document.getElementById('wishes');
+
+        // VOIX SYNTHÉTIQUES + CRIS
+        const voices = {
+            0: "cinq !", 1: "quatre !", 2: "trois !", 3: "deux !", 
+            4: "un !", 5: "bonne année !"
+        };
+
+        // Générateur de particules
+        function createParticles() {
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    document.body.appendChild(p);
+                    setTimeout(() => p.remove(), 5000);
+                }, i * 15);
+            }
+        }
+
+        // Feux d'artifice
+        function createFirework(x, y) {
+            const fw = document.createElement('div');
+            fw.className = 'firework';
+            fw.style.left = x + 'px'; fw.style.top = y + 'px';
+            document.body.appendChild(fw);
+            setTimeout(() => fw.remove(), 1000);
+        }
+
+        function launchFireworks() {
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => createFirework(
+                    Math.random() * window.innerWidth, 
+                    Math.random() * window.innerHeight / 2
+                ), i * 50);
+            }
+        }
+
+        // SYNTHÉTISEUR VOCAL
+        function speakVoice(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'fr-FR';
+            utterance.volume = 0.8;
+            utterance.rate = 0.9;
+            utterance.pitch = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Compte à rebours COMPLET
+        function startCountdown() {
+            i = 0;
+            el.textContent = countdown[0];
+            voiceEl.style.opacity = '0';
+            messageEl.style.opacity = '0';
+            messageEl.style.transform = 'translate(-50%, -50%) scale(0)';
+            
+            // Reset
+            document.getElementById('newyear').style.animation = 'none';
+            wishesEl.style.animation = 'none';
+            document.getElementById('signature').style.animation = 'none';
+            
+            clearInterval(interval); clearInterval(crowdInterval);
+            if (fireworksInterval) clearInterval(fireworksInterval);
+            speechSynthesis.cancel();
+            
+            interval = setInterval(() => {
+                if (i < countdown.length) {
+                    // COMPTE PRINCIPAL
+                    el.textContent = countdown[i];
+                    el.style.transform = `translate(-50%, -50%) scale(${1.2 + i * 0.5})`;
+                    el.style.textShadow = `0 0 ${50 + i * 20}px #ffd700, 0 0 ${90 + i * 30}px #ff006e`;
+                    
+                    // VOIX + FOULE
+                    voiceEl.textContent = voices[i].toUpperCase() + ' 🎉';
+                    voiceEl.style.opacity = '1';
+                    voiceEl.style.transform = `translate(-50%, -50%) scale(${1.3 + i * 0.3})`;
+                    
+                    // VOIX SYNTHÉTIQUE
+                    speakVoice(voices[i]);
+                    
+                    // EFFETS
+                    if (i >= 0) createParticles();
+                    if (i >= 2) launchFireworks();
+                    
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    celebrate();
+                }
+            }, 1200); // 1.2s pour voix naturelle
+        }
+
+        // Célébration
+        function celebrate() {
+            el.textContent = '🎊🎊🎊';
+            el.style.transform = 'translate(-50%, -50%) scale(2)';
+            
+            // MESSAGE CENTRAL EXPLOSIF
+            messageEl.style.animation = 'none';
+            setTimeout(() => {
+                messageEl.style.transition = 'all 1s ease';
+                messageEl.style.opacity = '1';
+                messageEl.style.transform = 'translate(-50%, -50%) scale(1.2)';
+            }, 200);
+            
+            speakVoice("Joyeux Nouvel An !");
+            
+            document.getElementById('newyear').style.animation = 'fadeInUp 1s ease forwards';
+            wishesEl.style.animation = 'fadeIn 1s ease 2s forwards';
+            
+            music.play().catch(e => console.log('Audio bloqué'));
+            musicPlaying = true;
+            
+            // Foule continue
+            crowdInterval = setInterval(() => {
+                voiceEl.textContent = ['🎉 YEAH !', '🥳 BONNE ANNÉE !', '🎊 INCROYABLE !'][Math.floor(Math.random()*3)];
+                voiceEl.style.transform = `translate(-50%, -50%) scale(${1.2 + Math.random() * 0.4})`;
+            }, 1000);
+            
+            fireworksInterval = setInterval(() => {
+                createFirework(Math.random() * window.innerWidth, Math.random() * window.innerHeight / 2);
+            }, 150);
+            
+            setInterval(createParticles, 800);
+        }
+
+        function toggleMusic() {
+            if (musicPlaying) { music.pause(); musicPlaying = false; }
+            else { music.play(); musicPlaying = true; }
+        }
+
+        window.onload = startCountdown;
+    </script>
+</body>
+</html>

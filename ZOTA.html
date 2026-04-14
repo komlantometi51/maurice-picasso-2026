@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique en ligne – PicassoShopExpress</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f8f9fa; 
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    header { 
+      background: linear-gradient(135deg, #1a1a1a, #2d2d2d); 
+      color: #fff; 
+      padding: 1rem 2rem; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 { margin: 0; font-size: 1.8rem; }
+    nav { display: flex; align-items: center; gap: 1.5rem; }
+    nav a { 
+      color: #fff; 
+      text-decoration: none; 
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover, nav a.active { color: #ff5722; }
+    
+    .hero { 
+      background: linear-gradient(135deg, #ff9800, #ff5722, #f44336); 
+      color: white; 
+      padding: 4rem 2rem; 
+      text-align: center; 
+    }
+    .hero h2 { font-size: 2.5rem; margin: 0 0 1rem 0; }
+    .hero p { font-size: 1.2rem; margin: 0.5rem 0; }
+    
+    .products { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+      gap: 2rem; 
+      padding: 3rem 2rem; 
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .card { 
+      background: white; 
+      padding: 1.5rem; 
+      border-radius: 12px; 
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1); 
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+    
+    .card img { 
+      width: 100%; 
+      height: 220px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 8px; 
+      margin-bottom: 1rem;
+      background: #f0f0f0;
+      transition: opacity 0.3s ease-in-out;
+      opacity: 0;
+    }
+    
+    .card img.loaded { opacity: 1; }
+    .card img.loading {
+      background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+    
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    .card h3 { color: #333; margin: 0 0 0.5rem 0; font-size: 1.3rem; }
+    .price { font-size: 1.4rem; font-weight: 700; color: #ff5722; margin: 0.5rem 0; }
+    .fcfa { font-size: 0.9em; font-weight: 500; }
+    
+    .add-to-cart { 
+      background: linear-gradient(45deg, #ff5722, #ff9800); 
+      color: white; border: none; padding: 12px 24px; width: 100%; 
+      border-radius: 25px; cursor: pointer; font-size: 1rem; font-weight: 600;
+      margin: 1rem 0; transition: all 0.3s;
+    }
+    .add-to-cart:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(255,87,34,0.4); }
+    .add-to-cart:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    
+    .product-link { color: #ff5722; text-decoration: none; font-weight: 500; display: inline-block; margin: 0.5rem 0; }
+    .product-link:hover { text-decoration: underline; }
+    .description { color: #666; font-size: 0.9rem; margin-top: 0.5rem; }
+    
+    .cart { max-width: 900px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; gap: 1rem; }
+    .quantity-controls { display: flex; align-items: center; gap: 0.5rem; background: #f8f9fa; padding: 0.5rem; border-radius: 8px; }
+    .qty-btn { width: 32px; height: 32px; border: none; border-radius: 50%; background: #fff; color: #333; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .qty-btn:hover { background: #ff5722; color: white; transform: scale(1.1); }
+    .qty-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .qty-input { width: 50px; height: 32px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-weight: 600; font-size: 1rem; }
+    .cart-price { font-weight: 600; color: #333; font-size: 1rem; }
+    .total-price { font-size: 2rem; color: #ff5722; font-weight: 800; }
+    .remove-item { background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: background 0.3s; }
+    .remove-item:hover { background: #d32f2f; }
+    .total-section { text-align: right; font-weight: bold; margin-top: 2rem; padding-top: 1rem; border-top: 3px solid #eee; }
+    .empty-cart { text-align: center; color: #666; font-size: 1.2rem; padding: 3rem; }
+    
+    .payment-methods { background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+    .contact-info { max-width: 800px; margin: 3rem auto; padding: 3rem; background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
+
+    /* Formulaire d'inscription amélioré */
+    .register-section {
+      max-width: 500px; margin: 3rem auto; padding: 2.5rem; background: white;
+      border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    .register-section h2 { text-align: center; color: #333; margin-bottom: 2rem; font-size: 1.8rem; }
+    .form-group { margin-bottom: 1.5rem; position: relative; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #555; }
+    .form-group input { width: 100%; padding: 12px 16px; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; transition: all 0.3s; background: #f8f9fa; }
+    .form-group input:focus { outline: none; border-color: #ff5722; background: white; box-shadow: 0 0 0 3px rgba(255,87,34,0.1); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .password-strength { height: 4px; border-radius: 2px; margin-top: 0.5rem; transition: all 0.3s; }
+    .strength-weak { background: #f44336; width: 25%; }
+    .strength-medium { background: #ff9800; width: 50%; }
+    .strength-strong { background: #4caf50; width: 100%; }
+    .register-btn { width: 100%; background: linear-gradient(45deg, #ff5722, #ff9800); color: white; border: none; padding: 14px; border-radius: 25px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .register-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,87,34,0.4); }
+    .register-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .form-message { padding: 12px; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: 500; }
+    .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    
+    footer { background: #1a1a1a; color: #ccc; text-align: center; padding: 2rem; margin-top: 3rem; }
+    
+    @media (max-width: 768px) {
+      .products { grid-template-columns: 1fr; padding: 1rem; gap: 1.5rem; }
+      header { flex-direction: column; gap: 1rem; padding: 1rem; }
+      nav { flex-wrap: wrap; justify-content: center; }
+      .hero h2 { font-size: 2rem; }
+      .cart-item { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .card img { height: 200px; }
+      .price { font-size: 1.3rem; }
+      .total-price { font-size: 1.6rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .register-section { margin: 2rem 1rem; padding: 2rem; }
+    }
+    @media (max-width: 480px) { .hero { padding: 2rem 1rem; } .products { padding: 1rem; } .card img { height: 180px; } header h1 { font-size: 1.5rem; } .price { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🛒 PicassoShopExpress</h1>
+    <nav>
+      <a href="#accueil">Accueil</a>
+      <a href="#produits">Produits</a>
+      <a href="#inscription">Inscription</a>
+      <a href="#panier">Panier (<span id="cartCount">0</span>)</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="accueil" class="hero">
+    <h2>Bienvenue sur PicassoShopExpress</h2>
+    <p>Votre boutique en ligne simple, rapide et sécurisée</p>
+    <p>Cliquez sur "Ajouter au panier" pour chaque produit de votre choix</p>
+  </section>
+
+  <section id="inscription" class="register-section">
+    <h2>👤 Créer un compte</h2>
+    <form id="registerForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="prenom">Prénom *</label>
+          <input type="text" id="prenom" name="prenom" required minlength="2">
+        </div>
+        <div class="form-group">
+          <label for="nom">Nom *</label>
+          <input type="text" id="nom" name="nom" required minlength="2">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="telephone">Téléphone (WhatsApp) *</label>
+        <input type="tel" id="telephone" name="telephone" required 
+               pattern="(\+?[1-9][0-9]{0,15})?" placeholder="+33612345678 ou +22893123456">
+        <small style="color: #666; font-size: 0.85rem;">Format: +33, +228, +1, etc.</small>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mot de passe *</label>
+        <input type="password" id="password" name="password" required minlength="6">
+        <div class="password-strength" id="passwordStrength"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer mot de passe *</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6">
+      </div>
+      
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="conditions" name="conditions" required>
+          J'accepte les <a href="#" style="color: #ff5722;">conditions d'utilisation</a> *
+        </label>
+      </div>
+      
+      <button type="submit" class="register-btn" id="registerBtn" disabled>🚀 Créer mon compte</button>
+      <div id="formMessage" class="form-message" style="display: none;"></div>
+    </form>
+  </section>
+
+  <section id="produits" class="products">
+    <div class="card" data-product='{"id":1,"name":"Chaussures en cuir","price":10000,"img":"sop1.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=220&fit=crop" loading="lazy" data-src="sop1.jpg" alt="Chaussures en cuir" width="300" height="220">
+      <h3>Chaussures en Cuir</h3>
+      <p class="price" data-price="10000">10&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <a href="h.html" class="product-link">Voir les chaussures</a>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Chaussures en cuir de qualité supérieure</p>
+    </div>
+    <div class="card" data-product='{"id":2,"name":"Vestes élégantes","price":15000,"img":"sop2.jpg"}'>
+      <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&h=220&fit=crop" loading="lazy" data-src="sop2.jpg" alt="Vestes" width="300" height="220">
+      <h3>Vestes</h3>
+      <p class="price" data-price="15000">15&nbsp;000 <span class="fcfa">FCFA</span></p>
+      <a href="p.html" class="product-link">Voir les vestes</a>
+      <button class="add-to-cart">➕ Ajouter au panier</button>
+      <p class="description">Vestes élégantes pour toutes les saisons</p>
+    </div>
+    <!-- 7 autres produits identiques... -->
+  </section>
+
+  <section id="panier" class="cart">
+    <h2>🛒 Votre Panier</h2>
+    <div id="cartItems" class="empty-cart">
+      <p>Votre panier est vide</p>
+      <p><a href="#produits" style="color: #ff5722; font-weight: bold;">🔙 Retour aux produits</a></p>
+    </div>
+    <div id="cartContent" style="display: none;">
+      <div id="cartList"></div>
+      <div class="total-section">
+        <h3>Total : <span id="total" class="total-price">0 FCFA</span></h3>
+        <div style="margin-top: 1rem;">
+          <button class="add-to-cart" onclick="clearCart()" style="max-width: 200px; background: #f44336;">🗑️ Vider le panier</button>
+        </div>
+      </div>
+    </div>
+    <div class="payment-methods">
+      <h3>💳 Moyens de paiement</h3>
+      <p>✔ Mobile Money (Flooz, TMoney)</p>
+      <p>✔ Carte bancaire (Visa, MasterCard)</p>
+      <p>✔ PayPal / Stripe</p>
+      <p>✔ Paiement à la livraison (Lomé et environs)</p>
+    </div>
+    <div style="text-align: center; margin-top: 2rem;">
+      <p><strong>📞 Contactez-nous :</strong></p>
+      <p>WhatsApp: <a href="tel:+22893231904" style="color: #ff5722; font-size: 1.3rem; font-weight: bold;">+228 93 23 19 04</a></p>
+      <p>Email: <a href="mailto:contact@picassoshopexpress.com" style="color: #666;">contact@picassoshopexpress.com</a></p>
+    </div>
+  </section>
+
+  <section id="contact" class="contact-info">
+    <h2>📧 Contactez-nous</h2>
+    <p><strong>Email :</strong> contact@picassoshopexpress.com</p>
+    <p><strong>Téléphone :</strong> +228 93 23 19 04</p>
+    <p><strong>Adresse :</strong> Lomé, Maritime, Togo</p>
+    <p><strong>Horaires :</strong> Lun-Sam 8h-19h</p>
+  </section>
+
+  <footer>
+    <p>© 2025 PicassoShopExpress – Tous droits réservés | Fabriqué avec ❤️ à Lomé, Togo</p>
+  </footer>
+
+  <script>
+    // Format FCFA
+    const formatFCFA = (price) => new Intl.NumberFormat('fr-TG', {minimumFractionDigits: 0, maximumFractionDigits: 0}).format(price) + ' FCFA';
+    
+    let cart = [];
+    
+    // Panier localStorage robuste
+    function loadCart() {
+      try {
+        const saved = localStorage.getItem('picassoshop_cart');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          cart = parsed.filter(item => item?.id && item.name && typeof item.price === 'number' && item.quantity > 0)
+                       .map(item => ({...item, quantity: Math.max(1, item.quantity)}));
+        }
+      } catch (e) {
+        console.error('Erreur localStorage:', e);
+        cart = [];
+        localStorage.removeItem('picassoshop_cart');
+      }
+    }
+    
+    function saveCart() {
+      try { localStorage.setItem('picassoshop_cart', JSON.stringify(cart)); } catch (e) { console.error('Erreur sauvegarde:', e); }
+    }
+    
+    // Lazy loading
+    function initLazyLoading() {
+      const images = document.querySelectorAll('img[loading="lazy"]');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.classList.add('loading');
+            img.src = img.dataset.src || img.src;
+            img.addEventListener('load', () => { img.classList.add('loaded'); img.classList.remove('loading'); });
+            img.addEventListener('error', () => img.classList.remove('loading'));
+          }
+        });
+      }, { rootMargin: '0px 0px 50px 0px' });
+      images.forEach(img => observer.observe(img));
+    }
+    
+    // FORMULAIRE INSCRIPTION - Validation internationale
+    const registerForm = document.getElementById('registerForm');
+    const registerBtn = document.getElementById('registerBtn');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const passwordStrength = document.getElementById('passwordStrength');
+    const formMessage = document.getElementById('formMessage');
+    
+    function validateForm() {
+      const prenom = document.getElementById('prenom').value.trim();
+      const nom = document.getElementById('nom').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const telephone = document.getElementById('telephone').value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      const conditions = document.getElementById('conditions').checked;
+      
+      // Validation téléphone internationale
+      const phoneRegex = /^(\+?[1-9][0-9]{0,15})?$/;
+      
+      const isValid = prenom.length >= 2 && nom.length >= 2 && email && 
+                     phoneRegex.test(telephone) && password.length >= 6 && 
+                     password === confirmPassword && conditions;
+      
+      registerBtn.disabled = !isValid;
+      return isValid;
+    }
+    
+    function updatePasswordStrength() {
+      const password = passwordInput.value;
+      let strength = 0;
+      if (password.length >= 8) strength++;
+      if (/[a-z]/.test(password)) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^a-zA-Z0-9]/.test(password)) strength++;
+      
+      passwordStrength.className = 'password-strength';
+      if (strength <= 2) passwordStrength.classList.add('strength-weak');
+      else if (strength <= 3) passwordStrength.classList.add('strength-medium');
+      else passwordStrength.classList.add('strength-strong');
+    }
+    
+    // Événements formulaire
+    ['input', 'change'].forEach(event => {
+      document.querySelectorAll('#registerForm input, #registerForm input[type="checkbox"]').forEach(field => {
+        field.addEventListener(event, validateForm);
+      });
+    });
+    passwordInput.addEventListener('input', updatePasswordStrength);
+    
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (validateForm()) {
+        const formData = new FormData(registerForm);
+        const userData = Object.fromEntries(formData);
+        
+        const users = JSON.parse(localStorage.getItem('picassoshop_users') || '[]');
+        if (users.find(u => u.email === userData.email)) {
+          showMessage('❌ Cet email est déjà utilisé', 'error');
+          return;
+        }
+        
+        users.push({
+          ...userData, id: Date.now(), date: new Date().toISOString(), verified: false
+        });
+        localStorage.setItem('picassoshop_users', JSON.stringify(users));
+        
+        showMessage('✅ Compte créé ! Contactez-nous pour validation (WhatsApp: +228 93 23 19 04)', 'success');
+        registerForm.reset();
+        registerBtn.disabled = true;
+        document.querySelector('#produits').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+    
+    function showMessage(text, type) {
+      formMessage.textContent = text;
+      formMessage.className = `form-message ${type}`;
+      formMessage.style.display = 'block';
+      setTimeout(() => formMessage.style.display = 'none', 6000);
+    }
+    
+    // PANIER
+    function updateCartDisplay() {
+      const cartCount = document.getElementById('cartCount');
+      const cartItems = document.getElementById('cartItems');
+      const cartContent = document.getElementById('cartContent');
+      const cartList = document.getElementById('cartList');
+      const total = document.getElementById('total');
+      
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = totalItems;
+      
+      if (cart.length === 0) {
+        cartItems.style.display = 'block';
+        cartContent.style.display = 'none';
+      } else {
+        cartItems.style.display = 'none';
+        cartContent.style.display = 'block';
+        cartList.innerHTML = cart.map((item, index) => {
+          const itemTotal = item.price * item.quantity;
+          return `
+            <div class="cart-item">
+              <div style="flex: 1;">
+                <strong>${item.name}</strong><br>
+                <small class="cart-price">${formatFCFA(item.price)} × ${item.quantity}</small><br>
+                <small class="cart-price">Total: ${formatFCFA(itemTotal)}</small>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="quantity-controls">
+                  <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
+                  <input type="number" class="qty-input" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)">
+                  <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                </div>
+                <button class="remove-item" onclick="removeFromCart(${index})">Supprimer</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        total.textContent = formatFCFA(totalPrice);
+        saveCart();
+      }
+    }
+    
+    function addToCart(productData) {
+      const existingItem = cart.find(item => item.id === productData.id);
+      if (existingItem) existingItem.quantity += 1;
+      else { productData.quantity = 1; cart.push(productData); }
+      updateCartDisplay();
+      alert(`✅ ${productData.name} ajouté au panier ! (${cart.find(item => item.id === productData.id).quantity} en panier)`);
+    }
+    
+    function updateQuantity(index, change) {
+      if (typeof change === 'string') change = parseInt(change);
+      const item = cart[index];
+      if (!item) return;
+      
+      if (change === -1) item.quantity = Math.max(1, item.quantity - 1);
+      else if (change === 1) item.quantity += 1;
+      else item.quantity = Math.max(1, change);
+      
+      if (item.quantity === 0) cart.splice(index, 1);
+      updateCartDisplay();
+    }
+    
+    function removeFromCart(index) {
+      const removedItem = cart[index];
+      cart.splice(index, 1);
+      updateCartDisplay();
+      alert(`🗑️ ${removedItem.name} supprimé du panier`);
+    }
+    
+    function clearCart() {
+      if (confirm('Vider complètement le panier ?')) {
+        cart = [];
+        localStorage.removeItem('picassoshop_cart');
+        updateCartDisplay();
+        alert('🛒 Panier vidé avec succès !');
+      }
+    }
+    
+    // Navigation fluide
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+          document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+    
+    // Initialisation complète
+    document.addEventListener('DOMContentLoaded', function() {
+      loadCart();
+      updateCartDisplay();
+      initLazyLoading();
+      validateForm();
+      
+      document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+          const card = this.closest('.card');
+          const productData = JSON.parse(card.dataset.product);
+          addToCart(productData);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

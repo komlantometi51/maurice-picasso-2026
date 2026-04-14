@@ -1,0 +1,19 @@
+/* 🌙 Thème nuit (par défaut déjà sombre) */
+body.dark {
+  background: linear-gradient(120deg, #0f2027, #203a43);
+}
+
+/* ☀️ Thème jour */
+body.light {
+  background: linear-gradient(120deg, #87ceeb, #fdfbfb);
+  color: #222;
+}
+
+body.light button {
+  background: #222;
+  color: white;
+}
+
+body.light .happy_new_year_2026 {
+  background: rgba(0, 0, 0, 0.1);
+}

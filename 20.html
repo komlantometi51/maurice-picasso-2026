@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compte à Rebours Festif</title>
+    <style>
+        body { background: black; color: gold; font-size: 4em; text-align: center; }
+        #countdown { font-family: Arial Black; }
+    </style>
+</head>
+<body>
+    <div id="countdown"></div>
+    <audio id="music" loop>
+        <!-- Ajoute ta musique festive ici -->
+    </audio>
+    <script>
+        const countdown = [4,3,2,1,"Bonne Année!"];
+        let i = 0;
+        const el = document.getElementById('countdown');
+        const music = document.getElementById('music');
+        
+        const interval = setInterval(() => {
+            el.textContent = countdown[i];
+            el.style.transform = `scale(${1 + i*0.2})`;
+            i++;
+            if (i >= countdown.length) {
+                clearInterval(interval);
+                music.play();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
